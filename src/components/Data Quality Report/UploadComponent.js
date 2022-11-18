@@ -1,9 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import ThingsContext from '../../thingsContext';
+import { useNavigate } from 'react-router-dom';
 const axios = require('axios').default;
 
 export default function UploadComponent() {
@@ -12,6 +14,10 @@ export default function UploadComponent() {
   const [error, setError] = useState({})
 
   const fileRef = useRef(null)
+
+  const navigate = useNavigate()
+
+  const {setDataQualityReport} = useContext(ThingsContext)
 
   const setField = (field, value) => {
     setFormUpload({ ...formUpload, [field]: value })
@@ -48,7 +54,19 @@ export default function UploadComponent() {
       axios.post('http://localhost:4000/eda-analysis',formData)
             .then(function (response) {
                 // handle success
-                console.log(response)
+                // console.log(response)
+                // console.log(response.data.status.analysis.Columns)
+                // console.log(response.data.status.analysis.Correlation)
+                // console.log(response.data.status.analysis.Describe)
+                // console.log(response.data.status.analysis.Missing_Values)
+                // console.log(response.data.status.analysis.Null_Values)
+                console.log(response.data.status.analysis.Schema)
+                // console.log(response.data.status.analysis.Shape)
+                // console.log(response.data.status.analysis.Spearman-Correlation)
+                // console.log(response.data.status.analysis.Summary)
+                setDataQualityReport(response.data.status.analysis)
+                console.log("Going to navigate")
+                navigate('/data-quality-report/report')
             })
             .catch(function (error) {
                 // handle error

@@ -1,6 +1,7 @@
 // import logo from './logo.svg';
 import './App.css';
-import {Routes,Route} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
+import { ThingsProvider } from './thingsContext';
 import SigninComponent from './components/SigninComponent';
 import HomeComponent from './components/HomeComponent';
 import DataQualityComponent from './components/Data Quality Report/DataQualityComponent';
@@ -11,14 +12,16 @@ import AlgorithmAnalyzerComponent from './components/Algorithm Analyzer/Algorith
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<SigninComponent/>}/>
-        <Route path="/home" element={<HomeComponent/>}/>
-        <Route path="/data-quality-report/*" element={<DataQualityComponent/>}/>
-        <Route path="/model-builder/*" element={<ModelBuilderComponent/>}/>
-        <Route path='/sales-forecast/*' element={<SalesForecastComponent/>}/>
-        <Route path='/algorithm-analyzer/*' element={<AlgorithmAnalyzerComponent/>}/>
-      </Routes>
+      <ThingsProvider>
+        <Routes>
+          <Route path="/" element={<SigninComponent />} />
+          <Route path="/home" element={<HomeComponent />} />
+          <Route path="/data-quality-report/*" element={<DataQualityComponent />} />
+          <Route path="/model-builder/*" element={<ModelBuilderComponent />} />
+          <Route path='/sales-forecast/*' element={<SalesForecastComponent />} />
+          <Route path='/algorithm-analyzer/*' element={<AlgorithmAnalyzerComponent />} />
+        </Routes>
+      </ThingsProvider>
     </>
     // <div className="App">
     //   <header className="App-header">

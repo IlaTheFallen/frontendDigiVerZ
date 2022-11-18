@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -6,6 +6,7 @@ import Image from 'react-bootstrap/Image';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
+import ThingsContext from '../thingsContext';
 import { useNavigate } from 'react-router-dom';
 const axios = require('axios').default;
 
@@ -25,6 +26,15 @@ export default function SigninComponent() {
     // setFormRegister({...formRegister,['password']:''})
     // setFormRegister({...formRegister,['repassword']:''})
     const [errorRegister, setErrorRegister] = useState({});
+
+    const {auth,setAuth,setUser} = useContext(ThingsContext)
+
+    useEffect(() => {
+        if (auth) {
+            navigate('/home')
+        }
+        setAuth(true)
+    }, [])
 
     const setFieldLogin = (field, value) => {
         setFormLogin({ ...formLogin, [field]: value })
@@ -47,14 +57,16 @@ export default function SigninComponent() {
             newError.email = "Please enter email"
         if (!password || password === '')
             newError.password = "Please enter password"
-        
+
         return newError
     }
 
     const validateFormRegister = () => {
-        const { email, org, password, repassword } = formRegister
+        const { name, email, org, password, repassword } = formRegister
         const newError = {}
 
+        if (!name || name === '')
+            newError.name = 'Please enter name'
         if (!email || email === '')
             newError.email = "Please enter email"
         if (!org || org === '')
@@ -65,7 +77,7 @@ export default function SigninComponent() {
             newError.repassword = "Please retype password"
         else if (password !== repassword)
             newError.repassword = "Password doesn't match"
-        
+
         return newError
     }
 
@@ -82,15 +94,18 @@ export default function SigninComponent() {
             // for (const [key,value] of formData){
             //     console.log(key + ":" + value)
             // }
-            axios.get('http://localhost:4000/signin?email='+formLogin.email+'&password='+formLogin.password)
-            .then(function (response) {
-                // handle success
-                console.log(response)
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            });
+            axios.get('http://localhost:4000/signin?email=' + formLogin.email + '&password=' + formLogin.password)
+                .then(function (response) {
+                    // handle success
+                    console.log(response)
+                    setUser(response.data.user)
+                    setAuth(true)
+                    navigate('/home')
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
             setFormLogin({})
         }
     }
@@ -103,6 +118,16 @@ export default function SigninComponent() {
             setErrorRegister(formError)
         } else {
             console.log(formRegister)
+            axios.post('http://localhost:4000/signup', formRegister)
+                .then(function (response) {
+                    // handle success
+                    console.log(response)
+                    setBool(true)
+                })
+                .catch(function (error) {
+                    // handle error
+                    console.log(error);
+                });
             setFormRegister({})
         }
     }
@@ -161,6 +186,14 @@ export default function SigninComponent() {
                                     </Form>
                                 ) : (
                                     <Form onSubmit={handleSubmitRegister}>
+                                        <Form.Group className="mb-3" controlId="signupName">
+                                            <Form.Label>Name</Form.Label>
+                                            <Form.Control type="text" placeholder="Enter name"
+                                                value={formRegister.name || ""}
+                                                isValid={!!errorRegister.name}
+                                                onChange={(e) => setFieldRegister('name', e.target.value)} />
+                                            <Form.Control.Feedback type="invalid">{errorRegister.name}</Form.Control.Feedback>
+                                        </Form.Group>
                                         <Form.Group className="mb-3" controlId="signupEmail">
                                             <Form.Label>Email address</Form.Label>
                                             <Form.Control type="email" placeholder="Enter email"
