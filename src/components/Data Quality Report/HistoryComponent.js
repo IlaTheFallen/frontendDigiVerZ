@@ -2,11 +2,17 @@ import React, { useState, useContext, useEffect } from 'react';
 import Table from 'react-bootstrap/Table';
 import Container from 'react-bootstrap/Container';
 import ThingsContext from '../../thingsContext';
+import { useNavigate } from 'react-router-dom';
 const axios = require('axios').default;
 
 export default function HistoryComponent() {
 
-  const { user, dataQualityHistory, setDataQualityHistory } = useContext(ThingsContext)
+  const { user, 
+    dataQualityHistory, 
+    setDataQualityHistory, 
+    setDataQualityReport } = useContext(ThingsContext)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const data = { "id": user._id }
@@ -28,12 +34,18 @@ export default function HistoryComponent() {
     console.log(dataQualityHistory)
   }, [dataQualityHistory])
 
+  const getHistoryData = (value) => {
+    console.log(value)
+    setDataQualityReport(value.analysis)
+    navigate('/data-quality-report/report')
+  }
+
   return (
     <Container>
       {
         dataQualityHistory ? (
           <>
-            <Table striped bordered hover>
+            <Table striped bordered hover className='mt-3'>
               <thead>
                 <tr>
                   <th>#</th>
@@ -44,8 +56,8 @@ export default function HistoryComponent() {
               </thead>
               <tbody>
                 {Object.entries(dataQualityHistory).map(([key, value]) => (
-                  <tr key={key}>
-                    <td>{key+1}</td>
+                  <tr key={key} onClick={()=>{getHistoryData(value)}}>
+                    <td>{int(key)+1}</td>
                     <td>{value.datetime}</td>
                     <td>{value.filename}</td>
                     <td>{value.type}</td>

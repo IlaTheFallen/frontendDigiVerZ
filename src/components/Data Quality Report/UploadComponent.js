@@ -17,7 +17,7 @@ export default function UploadComponent() {
 
   const navigate = useNavigate()
 
-  const {setDataQualityReport} = useContext(ThingsContext)
+  const {setDataQualityReport,user} = useContext(ThingsContext)
 
   const setField = (field, value) => {
     setFormUpload({ ...formUpload, [field]: value })
@@ -51,6 +51,7 @@ export default function UploadComponent() {
       const formData = new FormData()
       formData.append('file',formUpload.file)
       formData.append('metrics',formUpload.metrics)
+      formData.append('id',user._id)
       axios.post('http://localhost:4000/eda-analysis',formData)
             .then(function (response) {
                 // handle success

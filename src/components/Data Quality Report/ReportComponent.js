@@ -164,8 +164,26 @@ export default function ReportComponent() {
             </>
           ) : (<></>)
         }
-        <img src={`data:image/png;base64,${correlation}`} alt='' />
-        <img src={`data:image/png;base64,${spearmanCorrelation}`} alt='' />
+        {
+          correlation ? (
+            <>
+              <h5 className='mt-3'>Correlation graph:</h5>
+              <div className='text-center'>
+                <img src={`data:image/png;base64,${correlation}`} alt='' />
+              </div>
+            </>
+          ) : (<></>)
+        }
+        {
+          spearmanCorrelation ? (
+            <>
+              <h5 className='mt-3'>Spearman correlation graph:</h5>
+              <div className='text-center'>
+                <img src={`data:image/png;base64,${spearmanCorrelation}`} alt='' />
+              </div>
+            </>
+          ) : (<></>)
+        }
         {
           missing_values ? (
             <>

@@ -66,7 +66,9 @@ export default function ReportComponent() {
           errorPlot ? (
             <>
               <h5 className='mt-3'>Error graph: </h5>
-              <img src={`data:image/png;base64,${errorPlot}`} alt='' />
+              <div className='text-center'>
+                <img src={`data:image/png;base64,${errorPlot}`} alt='' />
+              </div>
             </>
           ) : (<></>)
         }
@@ -74,7 +76,9 @@ export default function ReportComponent() {
           feature ? (
             <>
               <h5 className='mt-3'>Importance of feature graph: </h5>
-              <img src={`data:image/png;base64,${feature}`} alt='' />
+              <div className='text-center'>
+                <img src={`data:image/png;base64,${feature}`} alt='' />
+              </div>
             </>
           ) : (<></>)
         }
@@ -82,7 +86,9 @@ export default function ReportComponent() {
           interpret ? (
             <>
               <h5 className='mt-3'>SHAP graph: </h5>
-              <img src={`data:image/png;base64,${interpret}`} alt='' />
+              <div className='text-center'>
+                <img src={`data:image/png;base64,${interpret}`} alt='' />
+              </div>
             </>
           ) : (<></>)
         }
