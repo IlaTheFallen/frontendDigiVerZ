@@ -9,7 +9,7 @@ export default function HistoryComponent() {
 
     const navigate = useNavigate()
 
-    const {user} = useContext(ThingsContext)
+    const {user,setAlgorithmAnalyzerReport} = useContext(ThingsContext)
 
     const [algorithmAnalysisHistory, setAlgorithmAnalysisHistory] = useState([])
 
@@ -31,14 +31,14 @@ export default function HistoryComponent() {
 
     const getHistoryData = (value) => {
         console.log(value)
-        setDataQualityReport(value.analysis)
+        setAlgorithmAnalyzerReport(value.analysis)
         navigate('/algorithm-analyzer/report')
       }
 
     return (
         <Container>
             {
-                dataQualityHistory ? (
+                algorithmAnalysisHistory ? (
                     <>
                         <Table striped bordered hover className='mt-3'>
                             <thead>
@@ -52,7 +52,7 @@ export default function HistoryComponent() {
                             <tbody>
                                 {Object.entries(algorithmAnalysisHistory).map(([key, value]) => (
                                     <tr key={key} onClick={() => { getHistoryData(value) }}>
-                                        <td>{int(key) + 1}</td>
+                                        <td>{parseInt(key) + 1}</td>
                                         <td>{value.datetime}</td>
                                         <td>{value.filename}</td>
                                         <td>{value.type}</td>

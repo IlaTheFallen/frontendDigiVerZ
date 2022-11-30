@@ -10,7 +10,7 @@ const axios = require('axios').default;
 
 export default function UploadComponent() {
 
-  const { setAlgorithmAnalyzerReport } = useContext(ThingsContext)
+  const { setAlgorithmAnalyzerReport,user } = useContext(ThingsContext)
 
   const [form, setForm] = useState({})
   const [error, setError] = useState({})
@@ -58,6 +58,7 @@ export default function UploadComponent() {
       formData.append('file', form.file)
       // formData.append('features', form.features)
       formData.append('target', form.target)
+      formData.append('id', user._id)
       axios.post('http://localhost:4000/algorithm-analysis', formData)
         .then(function (response) {
           // handle success
